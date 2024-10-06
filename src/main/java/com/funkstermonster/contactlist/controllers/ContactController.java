@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/contacts")
@@ -89,7 +90,8 @@ public class ContactController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteContact(@PathVariable Long id) {
         try {
-            if (!contactService.findById(id).isPresent()) {
+            Optional<Contact> contact = contactService.findById(id);
+            if (contact.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
             contactService.deleteById(id);
